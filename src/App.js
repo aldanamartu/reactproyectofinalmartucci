@@ -7,22 +7,8 @@ import Error from "./pages/Error";
 import Carrito from "./pages/Carrito";
 import Layout from "./pages/Layout";
 
-
-/*import NavBar from "./components/NavBar/NavBar";
-import Maia from "./components/Inicio/Maia";
-import ItemListContainer from "./components/ItemListContainer/ItemListContainer";
-import Galeria from "./pages/Galeria";*/
-
 function App() {
   return (
-    /*<div className="App">
-      <NavBar/>
-      <ItemListContainer greeting={'Bienvenidos'}/>
-      <Maia/>
-
-      
-    </div>*/
-
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<Layout />}>
