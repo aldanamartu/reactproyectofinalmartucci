@@ -8,6 +8,9 @@ import Carrito from "./pages/Carrito";
 import Layout from "./pages/Layout";
 
 function App() {
+
+
+
   return (
     <BrowserRouter>
       <Routes>
