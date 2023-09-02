@@ -1,5 +1,4 @@
 import { Link, useParams } from "react-router-dom";
-import lista_productos from "../data";
 import { db } from "../components/Firebase/firebase"
 import { getDocs, collection } from "firebase/firestore"
 import { useEffect, useState } from "react";

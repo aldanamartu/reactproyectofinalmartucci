@@ -1,27 +1,38 @@
 import { Link, useParams } from "react-router-dom";
-import lista_productos from "../data";
+import { db } from "../components/Firebase/firebase"
+import { getDocs, collection } from "firebase/firestore"
+import { useEffect, useState } from "react";
 
 function Producto() {
 
     const { productoId } = useParams();
+    const itemsCollectionRef = collection(db, "items");
+    const [ producto, setProducto ] = useState([]);
 
-    const producto = lista_productos.find((producto) => producto.id == productoId);
+    useEffect(() => {
+        const getItemProducto = async () => {
+            const data = await getDocs(itemsCollectionRef);
+            const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+            const producto = filteredData.find((producto) => producto.id == productoId);
+            setProducto(producto);
+        }
 
+        getItemProducto();
+    }, [])
+    
     const { image, title, price, description } = producto;
-
     //console.log(producto);
 
     return (
         <div className="galeria">
             <img src={image} />
             <h2>{title}</h2>
-            <h3>Precio: ${price}</h3>
-            <h4>{description}</h4>
+            <h4>Precio: ${price}</h4>
+            <h6>{description}</h6>
             <Link to="/productos">Volver</Link>
         </div>
     )
 
 }
-
 
 export default Producto;

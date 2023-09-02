@@ -5,7 +5,7 @@ function Home(){
 
     return (
         <div>
-            <h1>Pagina Home</h1>
+            <h1>Todo Lindo Tortas</h1>
             <ItemListContainer greeting={'Bienvenidos'}/>
             <Maia/>
         </div>
