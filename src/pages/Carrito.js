@@ -6,15 +6,14 @@ import { useEffect, useState } from "react";
 import imgEliminar from '../components/CartWidget/assets/eliminar.png';
 
 let carrito = localStorage.getItem("carrito");
-let precio = localStorage.getItem("precio");
 
 const actualizarLocalStorge = (carrito, precio) => {
     localStorage.setItem("carrito", JSON.stringify(carrito));
-    localStorage.setItem("precio", JSON.stringify(precio));
 }
 
 function Carrito() {
     const [itemList, setItemList] = useState([]);
+    const [price, updatePrice] = useState([0]);
     const [counter, updateCounter] = useState([0]);
     let items = collection(db, "items");
 
@@ -42,11 +41,18 @@ function Carrito() {
                 const data = await getDocs(q);
                 const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
                 setItemList(filteredData);
+                var precio = 0;
+                for (const producto in filteredData) {
+                    var productoEnCarrito = carrito.find(o => o.id === filteredData[producto].title);
+                    precio += filteredData[producto].price * productoEnCarrito.cantidad;
+                }
+                updatePrice(precio);
             }
     
             getItemList();
         } else {
             setItemList([]);
+            updatePrice(0);
         }
     
     }, [counter])
@@ -73,8 +79,8 @@ function Carrito() {
             <div className="galeria">
                 {itemList.map((producto) => {
 
-                    var carritoEnProducto = carrito.find(o => o.id === producto.title);
-                    var cant = carritoEnProducto != null ? carritoEnProducto.cantidad : 0;
+                    var productoEnCarrito = carrito.find(o => o.id === producto.title);
+                    var cant = productoEnCarrito != null ? productoEnCarrito.cantidad : 0;
                     return (
                         <article key={producto.id}>
                             <h5>
@@ -91,7 +97,9 @@ function Carrito() {
                         </article>
                     );
                 })}
-
+            </div>
+            <div className="precio">
+                <h2>Precio: ${price}</h2>
             </div>
         </div>
 
