@@ -48,13 +48,13 @@ function Carrito() {
                 }
                 updatePrice(precio);
             }
-    
+
             getItemList();
         } else {
             setItemList([]);
             updatePrice(0);
         }
-    
+
     }, [counter])
 
     const handleClickEliminar = event => {
@@ -98,9 +98,16 @@ function Carrito() {
                     );
                 })}
             </div>
-            <div className="precio">
-                <h2>Precio: ${price}</h2>
-            </div>
+            {price > 0 ? (
+                <div className="precio">
+                    <div>
+                        <h2>Precio: ${price}</h2>
+                    </div>
+                    <div className="comprar">
+                        <button>Comprar</button>
+                    </div>
+                </div>
+            ) : (<div className="precio">Agrega productos al carrito!</div>)}
         </div>
 
 
