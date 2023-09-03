@@ -9,7 +9,6 @@ function Home(){
             <ItemListContainer greeting={'Bienvenidos'}/>
             <Maia/>
         </div>
-
     )
 
 }

@@ -28,7 +28,7 @@ function Productos() {
                     if (!category || category == producto.category) {
                         return (
                             <article key={producto.id}>
-                                <h5>{producto.title}</h5>
+                                <h5>{producto.title} ({producto.quantity} unidades)</h5>
                                 <img src={producto.image} alt="productos" />
                                 <Link to={`/productos/${producto.id}`}>Mas Info</Link>
                             </article>
