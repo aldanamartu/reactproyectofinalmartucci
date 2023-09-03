@@ -1,13 +1,14 @@
 
 import { Link } from "react-router-dom";
 import { db } from "../components/Firebase/firebase"
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import uuid from 'react-uuid';
 import imgEliminar from '../components/CartWidget/assets/eliminar.png';
 
 let carrito = localStorage.getItem("carrito");
 
-const actualizarLocalStorge = (carrito, precio) => {
+const actualizarLocalStorge = (carrito) => {
     localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
@@ -27,7 +28,6 @@ function Carrito() {
             console.log("carrito ya es json");
         }
     }
-    console.log(carrito)
 
     useEffect(() => {
         var result = [];
@@ -58,10 +58,6 @@ function Carrito() {
     }, [counter])
 
     const handleClickEliminar = event => {
-        console.log(event.target);
-        console.log('eliminar producto %i', event.target.id);
-        console.log(carrito);
-
         var producto = carrito.find(o => o.id === event.target.id);
         if (producto.cantidad > 1) {
             producto.cantidad -= 1;
@@ -71,6 +67,26 @@ function Carrito() {
         actualizarLocalStorge(carrito);
         updateCounter(counter + 1);
     };
+
+    const handleClickComprar = async event => {
+        for (const indice in itemList) {
+            var producto = itemList[indice];
+            var productoEnCarrito = carrito.find(o => o.id === producto.title);
+            producto.quantity -= productoEnCarrito.cantidad;
+
+            //actualizo stock
+            const items = doc(db, 'items', producto.id);
+            await setDoc(items, { quantity: producto.quantity }, { merge: true });
+        }
+        //actualizo carrito
+        await setDoc(doc(db, "carritos", uuid()), {
+            price: price,
+            date: new Date()
+        });
+
+        carrito = [];
+        actualizarLocalStorge(carrito)
+    }
 
     return (
         <div>
@@ -104,7 +120,7 @@ function Carrito() {
                         <h2>Precio: ${price}</h2>
                     </div>
                     <div className="comprar">
-                        <button>Comprar</button>
+                        <button onClick={handleClickComprar}>Comprar</button>
                     </div>
                 </div>
             ) : (<div className="precio">Agrega productos al carrito!</div>)}

@@ -12,7 +12,6 @@ function Productos() {
         const getItemList = async () => {
             const data = await getDocs(itemsCollectionRef);
             const filteredData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            //console.log(filteredData);
             setItemList(filteredData);
         }
 
